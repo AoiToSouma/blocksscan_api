@@ -34,11 +34,11 @@ while true; do
           "https://api.coingecko.com/api/v3/simple/price?ids=plugin&vs_currencies=jpy" \
           -H 'accept: application/json') > /dev/null 2>&1
         priceJPY=$(echo $coingecko | jq '.plugin.jpy')
-        transition=$(echo "scale=$decimals; ($prequantity - $quantity) * 10^-$decimals" | bc)
+        transition=$(echo "scale=$decimals; ($quantity - $prequantity) * 10^-$decimals" | bc)
 
         # Insert history
         sqlite3 data/${dbname} "INSERT INTO history(balance, wei, updatedat, transition, priceusd, pricejpy, remarks, createdat) \
-          VALUES(${hold}, '${quantity}', '${updatedAt}', ${transition}, ${priceUSD}, ${priceJPY}, 'initial', '${exe_time}');"
+          VALUES(${hold}, '${quantity}', '${updatedAt}', ${transition}, ${priceUSD}, ${priceJPY}, '', '${exe_time}');"
 
         echo "処理日時 : ${exe_time}==========================="
         echo "  walletの更新日時 : ${updatedAt}"
