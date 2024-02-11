@@ -1,0 +1,17 @@
+{
+  "data": [
+    {
+      "wallet_name": "wallet1",
+      "wallet_address": "xdcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "wallet_name": "wallet2",
+      "wallet_address": "xdcbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    {
+      "wallet_name": "nodeaddress1",
+      "wallet_address": "xdccccccccccccccccccccccccccccccccccccccccc",
+      "token_address": "0xFf7412Ea7C8445C46a8254dFB557Ac1E48094391"
+    }
+  ]
+}

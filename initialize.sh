@@ -16,6 +16,11 @@ if [ "${pkgexist}" = "" ]; then
     echo -e "${GREEN}## Install: bc ...${NC}"
     sudo apt install bc
 fi
+pkgexist=$(which jq)
+if [ "${pkgexist}" = "" ]; then
+    echo -e "${GREEN}## Install: jq ...${NC}"
+    sudo apt install jq
+fi
 
 curdir=$(echo `pwd`)
 workdir=$(cd $(dirname $0); pwd)
@@ -58,39 +63,16 @@ echo ".open data/${dbname}" | sqlite3
 echo -e "${GREEN}## Create TABLE history...${NC}"
 sqlite3 data/${dbname} "CREATE TABLE history( \
   id INTEGER PRIMARY KEY AUTOINCREMENT, \
+  walletname TEXT, \
+  walletaddress TEXT, \
+  symbol TEXT, \
   balance REAL, \
   wei TEXT, \
+  decimals INTEGER, \
   updatedat TEXT, \
-  transition REAL, \
+  transition TEXT, \
   priceusd REAL, \
-  pricejpy REAL, \
+  price REAL, \
+  currency TEXT, \
   remarks TEXT, \
   createdat TEXT);"
-
-#Execution time
-exe_time=$(date "+%Y-%m-%dT%H:%M:%S.%3NZ")
-
-#initial value set
-xrc20=$(curl -s -X 'GET' \
-  "https://xdc.blocksscan.io/api/tokens/holding/XRC20/${wallet_address}" \
-  -H 'accept: application/json')
-
-pli=$(echo $xrc20 | jq --arg arg1 "${token_address}" '.items[] | select(.token == $arg1)')
-decimals=$(echo $pli | jq '.tokenObj.decimals')
-
-quantity=$(echo $pli | jq '.quantity' | tr -d '"')
-updatedAt=$(echo $pli | jq '.updatedAt' | tr -d '"')
-priceUSD=$(echo $pli | jq '.tokenObj.priceUSD' | tr -d '"')
-hold=$(echo "scale=$decimals; $quantity * 10^-$decimals" | bc)
-
-coingecko=$(curl -s -X 'GET' \
-  "https://api.coingecko.com/api/v3/simple/price?ids=plugin&vs_currencies=jpy" \
-  -H 'accept: application/json')
-
-priceJPY=$(echo $coingecko | jq '.plugin.jpy')
-
-#insert value
-sqlite3 data/${dbname} "INSERT INTO history(balance, wei, updatedat, transition, priceusd, pricejpy, remarks, createdat) \
-  VALUES(${hold}, '${quantity}', '${updatedAt}', 0, ${priceUSD}, ${priceJPY}, 'initial', '${exe_time}');" 
-
-echo -e "${GREEN}## Insert history...${NC}"

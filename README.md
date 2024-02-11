@@ -1,6 +1,5 @@
 # blocksscan_api
 Record changes in the wallet's XRC20 token balance using [Blocksscan Api](https://xdc.blocksscan.io/docs/).<br>
-By default, Plugin token is set.<br>
 Record to DB using sqlite.<br>
 
 # Install the repo
@@ -14,19 +13,23 @@ chmod +x *.sh
 ```
 nano .env
 ```
-token_address : XRC20 token(default is Plugin token)<br>
-wallet_address : edit it to your wallet<br>
 sleeptime : API execution interval(defalut is 300 seconds)<br>
 dbname : sqlite DB name for logging records<br>
 csvfile :　Prefix of CSV file when outputting records from DB<br>
 
+# Edit address informations
+```
+nano address.json
+```
+Register the addresses to monitor.<br>
+If you want to monitor only a specific token, also include the token address.<br>
+Records in json format.
 # Initial setting
 ```
 ./initialize.sh
 ```
-Firstly, "sqlite3", "bc" package is required.<br>
+Firstly, "sqlite3", "bc", "jq" package is required.<br>
 If these packages are not installed, this process will automatically install them.<br>
-Secondly, check the current balance of wallet address and create the first record.<br>
 The DB will be created in the "data" directory.<br>
 
 # Wallet monitoring
