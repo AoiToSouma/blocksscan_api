@@ -22,7 +22,9 @@ csvfile :　Prefix of CSV file when outputting records from DB<br>
 nano address.json
 ```
 Register the addresses to monitor.<br>
-If you want to monitor only a specific token, also include the token address.<br>
+If you want to monitor only a specific token, also include the token_address.<br>
+If you want to monitor a specific wallet at an interval different from sleeptime, also include interval_timer.<br>
+The unit of interval_timer is seconds.<br>
 Records in json format.
 # Initial setting
 ```

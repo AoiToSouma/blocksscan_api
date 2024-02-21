@@ -2,7 +2,8 @@
   "data": [
     {
       "wallet_name": "wallet1",
-      "wallet_address": "xdcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      "wallet_address": "xdcaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "interval_timer": 86400
     },
     {
       "wallet_name": "wallet2",

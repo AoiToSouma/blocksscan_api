@@ -55,6 +55,17 @@ while true; do
         wallet_name=$(echo "${data}" | jq -r '.wallet_name')
         wallet_address=$(echo "${data}" | jq -r '.wallet_address')
         token_address=$(echo "${data}" | jq -r '.token_address // "NA"')
+        interval_timer=$(echo "${data}" | jq -r '.interval_timer // "NA"')
+
+        if [ "${interval_timer}" != "NA" ]; then
+            if [ "${pre_time}" != "" ]; then
+                elapsed_time=$(echo $(expr `date -d"${exe_time}" +%s` - `date -d"${pre_time}" +%s`))
+                if [ $(( elapsed_time )) -lt $(( interval_timer )) ]; then
+                    # Skip
+                    continue
+                fi
+            fi
+        fi
 
         echo "[${wallet_name}] ${exe_time} ========================================"
         # Get list token holding of a holder
@@ -133,5 +144,6 @@ while true; do
             fi
         fi
     done
+    pre_time=${exe_time}
     sleep ${sleeptime}
 done
